@@ -23,7 +23,19 @@ export function render() {
 
   appContent.innerHTML = `
     <div class="grid-wrapper">
-      <h2>Your habits will appear here</h2>
+      ${state.habits
+        .map(
+          (habit) => `
+            <div class="habit-row">
+             <div class="habit-info">
+                <div class="habit-name">
+                    ${habit.name}
+                </div>
+             </div>
+            </div>
+            `,
+        )
+        .join("")}
     </div>
   `;
 }
