@@ -5,12 +5,27 @@ import {
   formatDate,
   isToday,
   isFuture,
+  getCurrentWeekStart,
 } from "./utils.js";
 
 export function render() {
-  const appContent =
-    document.getElementById("appContent");
+  const appContent = document.getElementById("appContent");
 
+  const weekStart = getCurrentWeekStart(state.currentWeekOffset);
+
+  const weekEnd = new Date(weekStart);
+
+  weekEnd.setDate(weekStart.getDate() + 6);
+
+  const formatter = new Intl.DateTimeFormat("en-US", {
+    month: "short",
+    day: "numeric",
+  });
+
+  document.getElementById("weekLabel").textContent = `${formatter.format(
+    weekStart,
+  )} - ${formatter.format(weekEnd)}`;
+  
   if (state.habits.length === 0) {
     appContent.innerHTML = `
       <div class="empty-state">
@@ -39,32 +54,36 @@ export function render() {
           <div class="habit-col-label">
             Habit
           </div>
-          ${dates.map( date => `
-                <div class="day-header">
+          ${dates
+            .map(
+              (date) => `
+                <div class="day-header ${isToday(date) ? "today" : ""}">
                   <div class="day-name">
-                    ${new Intl.DateTimeFormat(
-                      "en-US",
-                      {
-                        weekday: "short",
-                      }
-                    ).format(date)}
+                    ${new Intl.DateTimeFormat("en-US", {
+                      weekday: "short",
+                    }).format(date)}
                   </div>
                   <div class="day-number">
                     ${date.getDate()}
                   </div>
-                </div>`).join("")}
+                </div>`,
+            )
+            .join("")}
           <div class="streak-column">
             STR
           </div>
         </div>
-        ${state.habits.map(habit => `
+        ${state.habits
+          .map(
+            (habit) => `
               <div class="habit-row">
                 <div class="habit-info">
                   <div class="habit-name">
                     ${habit.name}
                   </div>
                 </div>
-                ${dates.map(date => {
+                ${dates
+                  .map((date) => {
                     const key = `${habit.id}-${formatDate(date)}`;
                     const checked = state.completions[key];
                     return `
@@ -87,7 +106,7 @@ export function render() {
                 </div>
 
               </div>
-            `
+            `,
           )
           .join("")}
 
