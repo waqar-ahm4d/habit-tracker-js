@@ -12,7 +12,14 @@ import {
 
 export function render() {
   const appContent = document.getElementById("appContent");
-
+  document.getElementById("todayDate").textContent = new Intl.DateTimeFormat(
+    "en-US",
+    {
+      weekday: "short",
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+    }).format(new Date());
   const weekStart = getCurrentWeekStart(state.currentWeekOffset);
 
   const weekEnd = new Date(weekStart);
