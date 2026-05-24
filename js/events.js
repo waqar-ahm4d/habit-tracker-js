@@ -26,3 +26,17 @@ export function setupEventListeners() {
     habitInput.value = "";
   });
 }
+export function toggleCompletion(habitId, date) {
+  if (date > new Date()) return;
+
+  const dateKey = `${habitId}-${date}`;
+
+  if (state.completions[dateKey]) {
+    delete state.completions[dateKey];
+  } else {
+    state.completions[dateKey] = true;
+  }
+
+  saveState();
+  render();
+}
