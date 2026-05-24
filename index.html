@@ -10,9 +10,57 @@
 </head>
 
 <body>
-
   <div class="app">
-    <h1>Habit Tracker</h1>
+    <div class="top-line"></div>
+
+    <header class="header">
+      <h1 class="title">Habit Tracker</h1>
+
+      <div class="date-label" id="todayDate"></div>
+    </header>
+
+    <section class="controls">
+      <div class="week-nav">
+        <button
+          class="nav-btn"
+          id="prevWeek"
+          aria-label="Previous week"
+        >
+          ←
+        </button>
+
+        <div class="week-label" id="weekLabel"></div>
+
+        <button
+          class="nav-btn"
+          id="nextWeek"
+          aria-label="Next week"
+        >
+          →
+        </button>
+      </div>
+
+      <button class="today-btn" id="todayBtn">
+        ↺ Current Week
+      </button>
+    </section>
+
+    <form class="habit-form" id="habitForm">
+      <input
+        type="text"
+        class="habit-input"
+        id="habitInput"
+        placeholder="Add a habit — e.g. Read 30 min, Exercise..."
+        maxlength="60"
+        aria-label="Add new habit"
+      />
+
+      <button type="submit" class="add-btn">
+        + Add
+      </button>
+    </form>
+
+    <div id="appContent"></div>
   </div>
 
   <script type="module" src="./js/app.js"></script>
