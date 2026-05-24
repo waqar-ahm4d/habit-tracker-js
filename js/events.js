@@ -94,14 +94,10 @@ function setupGridEvents() {
   );
 
     deleteButtons.forEach(button => {
-    button.addEventListener(
-        "click",
-        () => {
-        deleteHabit(
-            button.dataset.deleteId
-        );
-        }
-    );
+    button.addEventListener("click", () => 
+        {
+            deleteHabit(button.dataset.deleteId);
+        });
     });
 }
 

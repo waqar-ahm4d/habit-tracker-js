@@ -2,10 +2,12 @@ import { state } from "./state.js";
 import { deleteHabit } from "./events.js";
 import {
   getWeekDates,
+  getCurrentWeekStart,
   formatDate,
   isToday,
   isFuture,
-  getCurrentWeekStart,
+  calculateStreak,
+  getStreakData,
 } from "./utils.js";
 
 export function render() {
@@ -103,9 +105,29 @@ export function render() {
                   .join("")}
 
                 <div>
-                  <div class="streak-badge">
-                    —
-                  </div>
+                  ${(() => {
+                    const streak = calculateStreak(habit.id, state.completions);
+
+                    const streakData = getStreakData(streak);
+
+                    return `
+                        <div>
+                        <div
+                            class="streak-badge"
+                            style="
+                            background:
+                                ${streakData.background};
+
+                            color:
+                                ${streakData.color};
+                            "
+                        >
+                            ${streakData.icon}
+                            ${streak}
+                        </div>
+                        </div>
+                    `;
+                  })()}
                 </div>
 
               </div>

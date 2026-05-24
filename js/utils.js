@@ -67,3 +67,90 @@ export function isToday(date) {
 export function isFuture(date) {
   return date > getToday();
 }
+
+export function calculateStreak(
+  habitId,
+  completions
+) {
+  let streak = 0;
+
+  const currentDate =
+    getToday();
+
+  const todayKey =
+    `${habitId}-${formatDate(
+      currentDate
+    )}`;
+
+  if (!completions[todayKey]) {
+    currentDate.setDate(
+      currentDate.getDate() - 1
+    );
+  }
+
+  while (true) {
+    const key =
+      `${habitId}-${formatDate(
+        currentDate
+      )}`;
+
+    if (completions[key]) {
+      streak++;
+
+      currentDate.setDate(
+        currentDate.getDate() - 1
+      );
+    } else {
+      break;
+    }
+  }
+
+  return streak;
+}
+
+export function getStreakData(
+  streak
+) {
+  if (streak === 0) {
+    return {
+      icon: "—",
+      color: "#6B7280",
+      background:
+        "rgba(107,114,128,0.1)",
+    };
+  }
+
+  if (streak <= 2) {
+    return {
+      icon: "🌱",
+      color: "#10B981",
+      background:
+        "rgba(16,185,129,0.12)",
+    };
+  }
+
+  if (streak <= 6) {
+    return {
+      icon: "✨",
+      color: "#F59E0B",
+      background:
+        "rgba(245,158,11,0.12)",
+    };
+  }
+
+  if (streak <= 13) {
+    return {
+      icon: "🔥",
+      color: "#EF4444",
+      background:
+        "rgba(239,68,68,0.12)",
+    };
+  }
+
+  return {
+    icon: "👑",
+    color: "#8B5CF6",
+    background:
+      "rgba(139,92,246,0.12)",
+  };
+}
