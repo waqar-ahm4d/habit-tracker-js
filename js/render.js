@@ -1,5 +1,5 @@
 import { state } from "./state.js";
-
+import { deleteHabit } from "./events.js";
 import {
   getWeekDates,
   formatDate,
@@ -25,7 +25,7 @@ export function render() {
   document.getElementById("weekLabel").textContent = `${formatter.format(
     weekStart,
   )} - ${formatter.format(weekEnd)}`;
-  
+
   if (state.habits.length === 0) {
     appContent.innerHTML = `
       <div class="empty-state">
@@ -81,6 +81,9 @@ export function render() {
                   <div class="habit-name">
                     ${habit.name}
                   </div>
+                  <button class="icon-btn delete" data-delete-id="${habit.id}">
+                        ✕
+                  </button>
                 </div>
                 ${dates
                   .map((date) => {

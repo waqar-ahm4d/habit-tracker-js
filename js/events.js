@@ -88,6 +88,21 @@ function setupGridEvents() {
       toggleCompletion(habitId, date);
     });
   });
+  const deleteButtons =
+  document.querySelectorAll(
+    "[data-delete-id]"
+  );
+
+    deleteButtons.forEach(button => {
+    button.addEventListener(
+        "click",
+        () => {
+        deleteHabit(
+            button.dataset.deleteId
+        );
+        }
+    );
+    });
 }
 
 export function toggleCompletion(
@@ -117,5 +132,21 @@ export function toggleCompletion(
 
   render();
 
+  setupGridEvents();
+}
+
+export function deleteHabit(habitId) {
+  state.habits = state.habits.filter(
+      habit => habit.id !== habitId
+    );
+
+  Object.keys(state.completions).forEach(key => {
+    if (key.startsWith(habitId)) {
+      delete state.completions[key];
+    }
+  });
+
+  saveState();
+  render();
   setupGridEvents();
 }
