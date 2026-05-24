@@ -1,5 +1,5 @@
 import { state } from "./state.js";
-import { deleteHabit } from "./events.js";
+import { deleteHabit, startRename, renameHabit } from "./events.js";
 import {
   getWeekDates,
   getCurrentWeekStart,
@@ -80,13 +80,45 @@ export function render() {
             (habit) => `
               <div class="habit-row">
                 <div class="habit-info">
-                  <div class="habit-name">
-                    ${habit.name}
-                  </div>
-                  <button class="icon-btn delete" data-delete-id="${habit.id}">
-                        ✕
-                  </button>
-                </div>
+
+  ${
+    state.editingHabitId === habit.id
+      ? `
+        <input
+          id="rename-${habit.id}"
+          class="rename-input"
+          value="${habit.name}"
+        />
+      `
+      : `
+        <div
+          class="habit-name"
+          data-rename-id="${habit.id}"
+        >
+          ${habit.name}
+        </div>
+      `
+  }
+
+  <div class="habit-actions">
+
+    <button
+      class="icon-btn"
+      data-edit-id="${habit.id}"
+    >
+      ✎
+    </button>
+
+    <button
+      class="icon-btn delete"
+      data-delete-id="${habit.id}"
+    >
+      ✕
+    </button>
+
+  </div>
+
+</div>
                 ${dates
                   .map((date) => {
                     const key = `${habit.id}-${formatDate(date)}`;

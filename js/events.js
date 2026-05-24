@@ -99,6 +99,86 @@ function setupGridEvents() {
             deleteHabit(button.dataset.deleteId);
         });
     });
+    const editButtons =
+  document.querySelectorAll(
+    "[data-edit-id]"
+  );
+
+editButtons.forEach(button => {
+  button.addEventListener(
+    "click",
+    () => {
+      startRename(
+        button.dataset.editId
+      );
+    }
+  );
+});
+
+const renameLabels =
+  document.querySelectorAll(
+    "[data-rename-id]"
+  );
+
+renameLabels.forEach(label => {
+  label.addEventListener(
+    "dblclick",
+    () => {
+      startRename(
+        label.dataset.renameId
+      );
+    }
+  );
+});
+    const renameInputs =
+  document.querySelectorAll(
+    ".rename-input"
+  );
+
+renameInputs.forEach(input => {
+  input.addEventListener(
+    "keydown",
+    event => {
+      const habitId =
+        input.id.replace(
+          "rename-",
+          ""
+        );
+
+      if (event.key === "Enter") {
+        renameHabit(
+          habitId,
+          input.value
+        );
+      }
+
+      if (event.key === "Escape") {
+        state.editingHabitId =
+          null;
+
+        render();
+
+        setupGridEvents();
+      }
+    }
+  );
+
+  input.addEventListener(
+    "blur",
+    () => {
+      const habitId =
+        input.id.replace(
+          "rename-",
+          ""
+        );
+
+      renameHabit(
+        habitId,
+        input.value
+      );
+    }
+  );
+});
 }
 
 export function toggleCompletion(
@@ -144,5 +224,63 @@ export function deleteHabit(habitId) {
 
   saveState();
   render();
+  setupGridEvents();
+}
+export function startRename(
+  habitId
+) {
+  state.editingHabitId =
+    habitId;
+
+  render();
+
+  setupGridEvents();
+
+  const renameInput =
+    document.getElementById(
+      `rename-${habitId}`
+    );
+
+  if (renameInput) {
+    renameInput.focus();
+
+    renameInput.select();
+  }
+}
+
+export function renameHabit(
+  habitId,
+  newName
+) {
+  const trimmedName =
+    newName.trim();
+
+  if (!trimmedName) {
+    state.editingHabitId =
+      null;
+
+    render();
+
+    setupGridEvents();
+
+    return;
+  }
+
+  const habit =
+    state.habits.find(
+      habit => habit.id === habitId
+    );
+
+  if (habit) {
+    habit.name = trimmedName;
+  }
+
+  state.editingHabitId =
+    null;
+
+  saveState();
+
+  render();
+
   setupGridEvents();
 }
